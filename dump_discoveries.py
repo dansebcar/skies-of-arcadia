@@ -19,14 +19,19 @@ with open('data/raw-discoveries', encoding='utf-8') as f:
 
         return {'x': x, 'y': y, 'z': z}
 
-    data = []
+    discos = []
 
     for line in lines:
         index, line = line.split(maxsplit=1)
         points = list(map(parse, line.split(', ')))
 
-        data.append(points[0] if len(points) == 1 else points)
+        disco = points[0].copy()
+
+        if len(points) > 1:
+            disco.update(path=points)
+
+        discos.append(disco)
 
 
 with open('data/discoveries.json', 'w') as f:
-    json.dump(data, f)
+    json.dump(discos, f, indent=2)
