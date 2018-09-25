@@ -1,7 +1,7 @@
 import json
 
 with open('fetched-discoveries.json') as f:
-    meta_d = json.load(f)
+    meta = json.load(f)
 
 with open('raw', encoding='utf-8') as f:
     head, *lines = f.readlines()
@@ -28,13 +28,11 @@ with open('raw', encoding='utf-8') as f:
         index, line = line.split(maxsplit=1)
         points = list(map(parse, line.split(', ')))
 
-        meta = meta_d[str(index)]
-
         disco = {
             'point': points[0].copy(),
-            'name': meta['name'],
-            'href': meta['href'],
         }
+
+        disco.update(meta[str(index)])
 
         if len(points) > 1:
             disco.update(path=points)

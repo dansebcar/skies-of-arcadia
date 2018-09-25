@@ -25,7 +25,12 @@ for el in content.find_all(['span', 'li']):
                 'both': both_games,
             }
     elif el.name == 'span':
-        if 'id' in el and el['id'] == 'Legends_Exclusives':
+        try:
+            id = el['id']
+        except KeyError:
+            continue
+
+        if id == 'Legends_Exclusives':
             both_games = False
 
 
