@@ -1,6 +1,9 @@
 import json
 
-with open('data/raw-discoveries', encoding='utf-8') as f:
+with open('fetched-discoveries.json') as f:
+    meta_d = json.load(f)
+
+with open('raw', encoding='utf-8') as f:
     head, *lines = f.readlines()
     width, height = map(float, head.split())
 
@@ -25,7 +28,13 @@ with open('data/raw-discoveries', encoding='utf-8') as f:
         index, line = line.split(maxsplit=1)
         points = list(map(parse, line.split(', ')))
 
-        disco = points[0].copy()
+        meta = meta_d[str(index)]
+
+        disco = {
+            'point': points[0].copy(),
+            'name': meta['name'],
+            'href': meta['href'],
+        }
 
         if len(points) > 1:
             disco.update(path=points)
@@ -33,5 +42,5 @@ with open('data/raw-discoveries', encoding='utf-8') as f:
         discos.append(disco)
 
 
-with open('data/discoveries.json', 'w') as f:
+with open('discoveries.json', 'w') as f:
     json.dump(discos, f, indent=2)
